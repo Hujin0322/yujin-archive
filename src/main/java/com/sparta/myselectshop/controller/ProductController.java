@@ -6,11 +6,10 @@ import com.sparta.myselectshop.dto.ProductResponseDto;
 import com.sparta.myselectshop.security.UserDetailsImpl;
 import com.sparta.myselectshop.security.UserDetailsServiceImpl;
 import com.sparta.myselectshop.service.ProductService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +46,12 @@ public class ProductController {
             @RequestParam("isAsc") Boolean isAsc,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return productService.getProducts(userDetails.getUser(), page-1, size, sortBy, isAsc);
+    }
+
+    @PostMapping("/product/{productId}/folder")
+    public void addFolder(@PathVariable Long productId,
+                          @RequestParam Long folderId,
+                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        productService.addFolder(productId, folderId, userDetails.getUser());
     }
 }
